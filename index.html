@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Galaxy Guessing Game</title>
+<link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="pfi.css">
+<script src="pfi.js"></script>
+
+<style>
+body { 
+color: #f4d9d9;
+background: url('spacebackground.jpg');
+background-repeat: no-repeat;
+width: 900px
+}
+
+body h1 {
+font-family: 'Pacifico', cursive;
+font-size: 42px;
+}
+
+body p {
+font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 20px;
+}
+
+#wrapper {
+float: right;
+width: 600px;
+padding: 10px;
+}
+
+</style>
+</head>
+
+<body>
+<div id= "wrapper">
+
+
+<h1><b>Galaxy Guessing Game</b></h1>
+
+<p>Do you know how many stars are in the galaxy?</p>
+  <label for="number_input">Here's a hint it's a number between 1 and 100: </label>
+  <input type="text" id="number_input" class="number_input">
+  <button id="btn_enter_guess" class="btn_enter_guess">Enter Guess</button>
+  <h1>Messages</h1>
+ <p id="message_output" class="message_output">&nbsp;</p>
+  </div>
+  
+  
+
+
+
+<script>
+
+
+// gameVariables
+var ranNum = genRanNum();
+console.log(ranNum)
+var numberInput = document.getElementById('number_input');
+var btnEnterGuess = document.getElementById('btn_enter_guess');
+var messageOutput = document.getElementById('message_output');
+var counterGuess = 0;
+var gameFinished = false;
+
+// onclick handler
+btnEnterGuess.onclick = function(){
+	
+	if(gameFinished === false){
+		checkGuess();
+	}else{
+		messageOutput.innerHTML = 'Game finished, refresh the page to play again';	// if time add reset button instead of refresh page - 
+	}
+};
+
+
+
+// generate random number between 1 and 100
+function genRanNum(){
+	var randomNumber = Math.floor(Math.random() * 100) + 1;
+	return randomNumber;	
+} 
+
+// checkGuess function
+function checkGuess(){
+  counterGuess++;
+  var numIsValid = false;
+  
+  // get value from the input element
+  var guessedNum = numberInput.value;
+  console.log(guessedNum);
+  
+  // is value entered valid - 
+  if(isNaN(guessedNum) === true){
+	  messageOutput.innerHTML = 'Please enter a number between 1 and 100';
+  }else{
+	  guessedNum = parseFloat(guessedNum, 10);
+	  if(guessedNum < 1 || guessedNum > 100){
+		  messageOutput.innerHTML = 'Please enter a number between 1 and 100';
+	  }else{
+		  numIsValid = true;
+	  }
+  }
+  
+  // checkGuess against ranNumber
+  if(numIsValid === true){
+	if(guessedNum > ranNum){
+		messageOutput.innerHTML = 'Too high, try a lower number..';
+	}else if(guessedNum < ranNum){
+		messageOutput.innerHTML = 'Too low, try a higher number..';	
+	}else{
+		correctGuess(counterGuess);		
+	}
+  } 
+} 
+
+// correctGuess function
+function correctGuess(numberOfGuesses){
+  gameFinished = true;
+  
+  if(numberOfGuesses === 1){
+	  messageOutput.innerHTML = 'Wow, you are a mind reader, you guessed correctly on your first guess!';
+  }else if(numberOfGuesses <= 5){
+	  messageOutput.innerHTML = 'Hmmm.. not bad it took you only ' + numberOfGuesses + ' guesses to guess the correct number.';
+  }else{
+	  messageOutput.innerHTML = 'You guessed correctly! It took you ' + numberOfGuesses + ' guesses to guess the correct number.';
+  }			
+} 
+
+
+
+
+</script>
+
+</body>
+</html>
